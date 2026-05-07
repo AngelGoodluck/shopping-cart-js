@@ -1,59 +1,71 @@
-function startShopping() {
-    let cart = [];
-    const receiptDiv = document.getElementById('receipt');
-    receiptDiv.style.display = "block";
-    receiptDiv.innerHTML = "Processing your order...\n";
+let cart = [];
 
-    //  //this is a loop to continually add items and prices to the object. This loop ends on the 5th item.
+const startShopping = () => {
+    cart = [];
+document.getElementById("receipt-display").style.display = "none"; // Hide old receipt
     for (let i = 0; i < 5; i++) {
-        let nameInput = prompt(`Item #${i + 1}: Enter item name:`);
-        let priceInput = prompt(`Item #${i + 1}: Enter item price:`);
+        let nameInput = prompt(`Item #${i + 1}: Enter name:`);
+        let priceInput = prompt(`Item #${i + 1}: Enter price:`);
 
-        const newItem = {
+        cart.push({
             name: nameInput,
             price: Number(priceInput)
-        };
-        cart.push(newItem);
+        });
     }
 
-    //  This is the function definition for finding the grand total.
-    function showTotal(itemsArray) {
-        let subtotal = 0;
-        for (let i = 0; i < itemsArray.length; i++) {
-            subtotal += itemsArray[i].price;
-        }
-        const tax = subtotal * 0.05;
-        const grandTotal = subtotal + tax;
-
-        let output = `--- YOUR RECEIPT ---\n`;
-        output += `Items in your cart: ${itemsArray.length}\n`;
-        output += `Subtotal: $${subtotal.toFixed(2)}\n`;
-        output += `Total (with 5% tax): $${grandTotal.toFixed(2)}\n\n`;
-        
-        return { grandTotal, output };
-    }
-
-    const result = showTotal(cart);
-    const finalAmount = result.grandTotal;
-    receiptDiv.innerHTML = result.output;
-
-     //Adding a payment method by momo
-    alert("The payment method being used is MOMO. Follow the prompts.");
+    // Display Cart List
+    let cartHTML = "<h3>Current Cart:</h3><ul>";
+    cart.forEach(item => {
+        cartHTML += `<li>${item.name}: $${item.price.toFixed(2)}</li>`;
+    });
+    cartHTML += "</ul>";
+    document.getElementById("cart-display").innerHTML = cartHTML;
     
-    const mobileNumber1 = prompt("Enter your mobile number:");
-    const mobileNumber2 = prompt("Confirm your mobile number:");
+};
 
-    if (mobileNumber1 !== mobileNumber2) {
-        receiptDiv.innerHTML += "❌ Error: The numbers do not match.";
+const calculateTotals = (items) => {
+    let subtotal = items.reduce((sum, item) => sum + item.price, 0);
+    let tax = subtotal * 0.05;
+    return {
+        subtotal: subtotal,
+        tax: tax,
+        grandTotal: subtotal + tax
+    };
+};
+ // Run Calculations & Payment
+    const totals = calculateTotals(items);
+    displayReceipt(totals);
+
+const displayReceipt = (totals) => {
+    const receiptDiv = document.getElementById("receipt-display");
+    receiptDiv.style.display = "block"; // Make it visible
+    receiptDiv.innerHTML = `
+        <h3>--- OFFICIAL RECEIPT ---</h3>
+        <p>Subtotal: $${totals.subtotal.toFixed(2)}</p>
+        <p>Tax (5%): $${totals.tax.toFixed(2)}</p>
+        <p><strong>Grand Total: $${totals.grandTotal.toFixed(2)}</strong></p>
+    `;
+};
+ 
+const handlePayment = () => {
+    const statusDiv = document.getElementById("payment-status");
+    const num1 = prompt("MOMO: Enter mobile number:");
+    const num2 = prompt("MOMO: Confirm mobile number:");
+    if (num1 !== num2) {
+        statusDiv.innerHTML = "<p style='color:red;'> Error: \u274C  Numbers do not match.</p>";
+        return;
+    }else{
+
+    const pin = "1234";
+    const userPin = prompt("Enter MOMO PIN:");
+    if (userPin === pin) {
+        statusDiv.innerHTML = `
+            <p style='color:green;'> \u2705 Payment Successful!</p>
+            <p><strong>$${totals.grandTotal.toFixed(2)}</strong> has been deducted from your account. Thank you for shopping with Sharsupply!!!</br></p>
+        Have a great day! \uD83D\uDE0A`;
+
     } else {
-        const pin = "1234";
-        let pin1 = prompt(`An amount of $${finalAmount.toFixed(2)} is being deducted. Enter your pin:`);
-
-        if (pin1 !== pin) {
-            receiptDiv.innerHTML += "❌ Error: You've entered a wrong pin.";
-        } else {
-            receiptDiv.innerHTML += `✅ Payment of $${finalAmount.toFixed(2)} made to Sharsupply.\n`;
-            receiptDiv.innerHTML += `THANKS FOR SHOPPING WITH US!`;
-        }
-    }
+        statusDiv.innerHTML = "<p style='color:red;'> Error: \u274C Incorrect PIN.</p>";
+    }}
 }
+handlePayment(totals);
