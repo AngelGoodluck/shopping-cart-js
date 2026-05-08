@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sharsupply Online Mall</title>
+    <meta charset="UTF-8">
+
+    <style>
+        body { font-family: sans-serif; 
+         padding: 20px; line-height: 1.6; 
+          background-image: url('https://static.vecteezy.com/system/resources/thumbnails/007/473/992/small/colourful-paper-shopping-bags-and-credit-card-in-a-cart-with-scooter-appeared-from-smartphones-screen-concept-of-fast-delivery-service-and-shopping-online-3d-illustration-with-object-clipping-path-photo.jpg');
+            background-attachment: fixed;
+              background-size: cover;
+          }
+          h1{
+            color: #6a60be;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            font-family: 'Segoe UI';
+          }
+        #receipt { background: #02abfa; padding: 15px; border-radius: 8px; display: none; white-space: pre-wrap; }
+        button { padding: 10px 20px; cursor: pointer; background: #6a60be; color: rgb(248, 248, 242); border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Sharsupply Online Shopping Mall</h1>
+    <p>Click the button below to start adding items to your cart.</p>
+
+  
+    <button onclick="startShopping()">Start Shopping</button><br></br>
+    <hr>
+<div id="cart-display"></div>
+<!-- The items will show up here -->
+ <div id="payment-status"></div>
+ <div id="receipt-display"></div>
+<!-- The reciept will be displayed here -->
+     
+ 
+<!-- Linking the shoppingCart js file -->
+      <script src="shoppingCartWeb.js"></script>
+    
+</body>
+</html>

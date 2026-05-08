@@ -2,7 +2,7 @@ let cart = [];
 
 const startShopping = () => {
     cart = [];
-document.getElementById("receipt-display").style.display = "none"; // Hide old receipt
+document.getElementById("receipt-display").style.display = "none"; // Hiding old receipt
     for (let i = 0; i < 5; i++) {
         let nameInput = prompt(`Item #${i + 1}: Enter name:`);
         let priceInput = prompt(`Item #${i + 1}: Enter price:`);
@@ -32,10 +32,6 @@ const calculateTotals = (items) => {
         grandTotal: subtotal + tax
     };
 };
- // Run Calculations & Payment
-    const totals = calculateTotals(items);
-    displayReceipt(totals);
-
 const displayReceipt = (totals) => {
     const receiptDiv = document.getElementById("receipt-display");
     receiptDiv.style.display = "block"; // Make it visible
@@ -68,4 +64,8 @@ const handlePayment = () => {
         statusDiv.innerHTML = "<p style='color:red;'> Error: \u274C Incorrect PIN.</p>";
     }}
 }
+ startShopping();
+// Running Calculations & Payment
+const totals = calculateTotals(cart);
+displayReceipt(totals);
 handlePayment(totals);
